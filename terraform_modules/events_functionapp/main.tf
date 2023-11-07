@@ -44,6 +44,8 @@ resource "azurerm_linux_function_app" "events" {
   service_plan_id            = azurerm_service_plan.events.id
 
   site_config {
+
+    application_insights_key = "${var.application_insights_key}"
     application_stack {
       node_version = "18"
     }

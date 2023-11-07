@@ -23,3 +23,8 @@ variable "export_container_name" {
     type = string
     description = "The name of the export container"
 }
+
+variable "app_function_app_id" {
+    type = string
+    description = "App end point for blob created events"
+}

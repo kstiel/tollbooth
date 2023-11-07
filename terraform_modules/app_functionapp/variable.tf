@@ -23,6 +23,11 @@ variable "app_function_app_name" {
   description = "The name of service plan for this function app"
 }
 
+variable "application_insights_key" {
+  type = string
+  description = "The app insight key for this function"
+}
+
 variable "computervision_api_url" {
   type = string
   description = "Computer vision endpoint url"

@@ -13,6 +13,17 @@ variable "location" {
     description = "The location of the event grid topic"
 }
 
+variable "savePlateData_function_id" {
+    type = string
+    description = "Full function id for savePlateData function"
+}
+
+variable "checkup_function_id" {
+      type = string
+    description = "Full function id for QueuePlateForManualCheckup function"
+
+}
+
 # variable "processimage_function_name" {
 #     type = string
 #     description = "The name of the ProcessImage function in app function"

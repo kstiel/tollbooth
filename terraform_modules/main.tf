@@ -25,6 +25,7 @@ module "init_storage" {
   location                  = var.location
   images_container_name     = "images"
   export_container_name     = var.init_storage_export_container_name
+  app_function_app_id = module.app_function_app.app_id
 }
 
 module "cosmosdb" {
@@ -46,6 +47,8 @@ module "events_function_app" {
   events_storage_account_name = "events"
   events_service_plan_name    = "EventsServicePlan"
   events_function_app_name    = "EventsFunctionApp"
+  application_insights_key = module.application_insights.app_insight_instrumentation_key
+
 }
 
 module "app_function_app" {
@@ -55,6 +58,7 @@ module "app_function_app" {
   app_storage_account_name = "app"
   app_service_plan_name    = "AppServicePlan"
   app_function_app_name    = "AppFunctionApp"
+  application_insights_key = module.application_insights.app_insight_instrumentation_key
 
   computervision_api_url          = format("%s%s", module.computer_vision.computerVisionEndPoint, "vision/v2.0/ocr")
   computervision_apikey_keyvault  = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", "${var.key_vault_name}", "${var.computervision_apikey_name}")
@@ -92,11 +96,12 @@ module "secrets" {
 }
 
 module "eventgrid_topic" {
-  source               = "./eventgrid_topic"
-  eventgrid_topic_name = "TollboothEventGridTopic"
-  resource_group_name  = module.resource_group.resource_group_name
-  location             = var.location
-
+  source                    = "./eventgrid_topic"
+  eventgrid_topic_name      = "TollboothEventGridTopic"
+  resource_group_name       = module.resource_group.resource_group_name
+  location                  = var.location
+  savePlateData_function_id = "${module.events_function_app.app_id}/functions/savePlateData"
+  checkup_function_id = "${module.events_function_app.app_id}/functions/QueuePlateForManualCheckup"
   # processimage_function_name      = "ProcessImage"
   # app_function_id                 = module.app_function_app.app_id
   # app_function_storage_account_id = module.app_function_app.app_storage_account_id
@@ -111,5 +116,12 @@ module "computer_vision" {
   location               = var.location
 }
 
+
+module "application_insights" {
+  source = "./application_insights"
+  resource_group_name = module.resource_group.resource_group_name
+  location = var.location
+  app_insight_name = "TollboothMonitor"
+}
 
 

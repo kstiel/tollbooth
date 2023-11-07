@@ -43,8 +43,9 @@ resource "azurerm_linux_function_app" "app" {
   storage_account_name       = azurerm_storage_account.app.name
   storage_account_access_key = azurerm_storage_account.app.primary_access_key
   service_plan_id            = azurerm_service_plan.app.id
-
+  
   site_config {
+    application_insights_key = "${var.application_insights_key}"
     application_stack {
       dotnet_version = "6.0"
     }
@@ -74,16 +75,5 @@ resource "azurerm_linux_function_app" "app" {
     # "cosmosDBDatabaseId" = azurerm_cosmosdb_sql_database.sql.id
     # "cosmosDBCollectionId" = azurerm_cosmosdb_sql_container.processed_container.id
     # "exportCsvContainerName" = azurerm_storage_container.export.name
-  }
-}
-
-
-resource "azurerm_eventgrid_event_subscription" "processimage" {
-  name = "ProcessImage"
-  scope = azurerm_storage_account.app.id
-
-  included_event_types = ["Microsoft.Storage.BlobCreated"]
-  azure_function_endpoint {
-    function_id = "${azurerm_linux_function_app.app.id}/functions/ProcessImage"
   }
 }

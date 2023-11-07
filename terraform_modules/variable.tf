@@ -31,7 +31,6 @@ variable "cosmosdb_authoricationkey_name" {
 }
 
 
-
 variable "init_storage_authorizationkey_name" {
   type        = string
   description = "The name of init storage account secret in key vault"

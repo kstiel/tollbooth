@@ -36,3 +36,14 @@ resource "azurerm_storage_container" "export" {
   storage_account_name  = azurerm_storage_account.init.name
   container_access_type = "private"
 }
+
+
+resource "azurerm_eventgrid_event_subscription" "processimage" {
+  name = "ProcessImage"
+  scope = azurerm_storage_account.init.id
+
+  included_event_types = ["Microsoft.Storage.BlobCreated"]
+  azure_function_endpoint {
+    function_id = "${var.app_function_app_id}/functions/ProcessImage"
+  }
+}
