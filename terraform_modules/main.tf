@@ -97,9 +97,9 @@ module "eventgrid_topic" {
   resource_group_name  = module.resource_group.resource_group_name
   location             = var.location
 
-  processimage_function_name      = "ProcessImage"
-  app_function_id                 = module.app_function_app.app_id
-  app_function_storage_account_id = module.app_function_app.app_storage_account_id
+  # processimage_function_name      = "ProcessImage"
+  # app_function_id                 = module.app_function_app.app_id
+  # app_function_storage_account_id = module.app_function_app.app_storage_account_id
 
 }
 

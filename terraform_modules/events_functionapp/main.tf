@@ -45,7 +45,7 @@ resource "azurerm_linux_function_app" "events" {
 
   site_config {
     application_stack {
-      node_version = "12"
+      node_version = "18"
     }
   }
 }

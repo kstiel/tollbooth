@@ -76,3 +76,14 @@ resource "azurerm_linux_function_app" "app" {
     # "exportCsvContainerName" = azurerm_storage_container.export.name
   }
 }
+
+
+resource "azurerm_eventgrid_event_subscription" "processimage" {
+  name = "ProcessImage"
+  scope = azurerm_storage_account.app.id
+
+  included_event_types = ["Microsoft.Storage.BlobCreated"]
+  azure_function_endpoint {
+    function_id = "${azurerm_linux_function_app.app.id}/functions/ProcessImage"
+  }
+}
